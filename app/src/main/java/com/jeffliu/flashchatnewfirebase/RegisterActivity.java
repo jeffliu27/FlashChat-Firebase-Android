@@ -1,8 +1,6 @@
-package com.londonappbrewery.flashchatnewfirebase;
+package com.jeffliu.flashchatnewfirebase;
 
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +12,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -33,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mConfirmPasswordView;
 
     // Firebase instance variables
-
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -59,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         // TODO: Get hold of an instance of FirebaseAuth
-
+        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -116,11 +115,26 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Add own logic to check for a valid password (minimum 6 characters)
-        return true;
+        String confirmPassword = mConfirmPasswordView.getText().toString();
+        return confirmPassword.equals(password) && password.length() > 4;
     }
 
     // TODO: Create a Firebase user
+    private void createFirebaseUser(){
+        String email = mEmailView.getText().toString();
+        String password = mEmailView.getText().toString();
 
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
+                Log.d("FlashChat", "createUser onComplete:" + task.isSuccessful());
+
+                if (!task.isSuccessful()){
+                    Log.d("FlashChat", "user creation failed");
+                }
+            }
+        });
+    }
 
     // TODO: Save the display name to Shared Preferences
 
