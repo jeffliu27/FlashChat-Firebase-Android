@@ -1,6 +1,7 @@
 package com.jeffliu.flashchatnewfirebase;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -104,6 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             // TODO: Call create FirebaseUser() here
+            createFirebaseUser();
 
         }
     }
@@ -131,6 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (!task.isSuccessful()){
                     Log.d("FlashChat", "user creation failed");
+                    showErrorDialog("Registration attempt failed");
                 }
             }
         });
@@ -140,6 +143,14 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     // TODO: Create an alert dialog to show in case registration failed
+    private void showErrorDialog(String message){
+        new AlertDialog.Builder(this)
+                .setTitle("Oops")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 
 
 
