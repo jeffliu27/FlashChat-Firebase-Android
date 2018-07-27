@@ -122,9 +122,12 @@ public class ChatListAdapter extends BaseAdapter{
         if (isItMe){
             holder.params.gravity = Gravity.END;
             holder.authorName.setTextColor(Color.GREEN);
+            holder.body.setBackgroundResource(R.drawable.bubble2);
         }else{
             holder.params.gravity = Gravity.START;
             holder.authorName.setTextColor(Color.BLUE);
+            holder.body.setBackgroundResource(R.drawable.bubble1);
+
         }
 
         holder.authorName.setLayoutParams((holder.params));
